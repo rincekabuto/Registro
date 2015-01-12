@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>Registro</title>
+	<link href="style.css" rel="stylesheet">
+	<script src="FormValidator.js"></script>
+</head>
+<body>
+<div class="wrap">
+	<div class="i18n">
+		<?php if(array_key_exists('l',$_SESSION) && $_SESSION['l'] == 'ru'):?>
+			<a href="/?l=en">In English</a>
+		<?php else:?>
+			<a href="/?l=ru">По русски</a>
+		<?php endif;?>
+	</div>
+	<?php print $content; ?>
+</div>
+</body>

@@ -1,0 +1,16 @@
+<div class="wrap-center"><div class="row">
+    <div><strong><?php $l('Username');?>: </strong> <?=$user['name'] ?></div>
+    <div><strong><?php $l('Email');?>: </strong> <?=$user['email']?></div>
+    <?php if($user['avatar'] != ''):?>
+        <div>
+            <strong><?php $l('Avatar');?>: </strong><br/>
+            <img src="avatars/<?=$user['avatar']?>" class="i-responsive i-thumbnail"/>
+        </div>
+    <?php endif; ?>
+    </div>
+    <div class="row">
+        <a href="/logout">
+            <button class="btn btn-default"><?php $l('Logout');?></button>
+        </a>
+    </div>
+</div>

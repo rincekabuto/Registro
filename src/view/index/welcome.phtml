@@ -1,0 +1,111 @@
+<?php
+$showValidField = function($fieldName, $errorsStack){
+    if(isset($errorsStack) && $errorsStack[$fieldName]['value']){
+        echo $errorsStack[$fieldName]['value'];
+    }
+};
+$showFieldErrors = function($fieldName, $errorsStack = null) use($l){
+    if(isset($errorsStack) && $errorsStack[$fieldName]['error']){
+        echo '<p class="error-block">';
+        $l($errorsStack[$fieldName]['error']);
+        echo '</p>';
+    }
+};
+?>
+<div class="wrap-center">
+    <div class="wrap-form-container authorize">
+        <h2><?php $l('Login');?></h2>
+        <form action="/authorize" method="post" enctype="application/x-www-form-urlencoded" name="authorize" id="authorize">
+            <div class="wrap-form-group">
+                <label for="email"><?php $l('Email');?></label>
+                <input type="email" name="email" class="form-control" id="email" placeholder="<?php $l('Enter email');?>"
+                    value="<?php $showValidField('email',$authorizeErrors); ?>">
+                <?php $showFieldErrors('email',$authorizeErrors); ?>
+            </div>
+            <div class="wrap-form-group">
+                <label for="password"><?php $l('Password');?></label>
+                <input type="password" name="password" class="form-control" id="password" placeholder="<?php $l('Enter password');?>"
+                   value="<?php $showValidField('password',$authorizeErrors); ?>">
+                <?php $showFieldErrors('password',$authorizeErrors); ?>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="rememberMe" id="rememberMe"> <?php $l('Remember me');?>
+                </label>
+            </div>
+            <?php $showFieldErrors('under',$authorizeErrors); ?>
+            <button type="submit" name="submit" class="btn btn-default"><?php $l('Enter');?></button>
+        </form>
+    </div>
+    <div class="wrap-form-container register">
+        <h2><?php $l('Registration');?></h2>
+        <form action="/register" method="post" enctype="multipart/form-data" name="register" id="register">
+            <div class="wrap-form-group">
+                <label for="name"><?php $l('Name');?></label>
+                <input type="text" name="name" class="form-control" id="name" placeholder="<?php $l('Enter name');?>"
+                   value="<?php $showValidField('name',$registerErrors); ?>">
+                <?php $showFieldErrors('name',$registerErrors); ?>
+            </div>
+            <div class="wrap-form-group">
+                <label for="email"><?php $l('Email');?></label>
+                <input type="email" name="email" class="form-control" id="email" placeholder="<?php $l('Enter email');?>"
+                   value="<?php $showValidField('email',$registerErrors); ?>">
+                <?php $showFieldErrors('email',$registerErrors); ?>
+            </div>
+            <div class="wrap-form-group">
+                <label for="password"><?php $l('Password');?></label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="<?php $l('Enter password');?>"
+                   value="<?php $showValidField('password',$registerErrors); ?>">
+                <?php $showFieldErrors('password',$registerErrors); ?>
+            </div>
+            <div class="wrap-form-group">
+                <label for="avatar"><?php $l('Avatar');?></label>
+                <input type="file" id="avatar" name="avatar">
+                <?php $showFieldErrors('avatar',$registerErrors); ?>
+                <p class="help-block"><?php $l('Image (gif, jpg, png). <br/> 2Mb max.');?></p>
+            </div>
+            <button type="submit" name="submit" class="btn btn-default"><?php $l('Register');?></button>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    var onError = function(errors, evt){
+        if (errors.length > 0) {
+//            evt.preventDefault();
+            for(var i=0; i<errors.length;i++){
+                p = document.createElement('p');
+                p.className = 'error-block';
+                p.innerText = errors[i].message;
+//                console.log(errors, evt);
+                if(errors[i].element.nextElementSibling == null){
+                    errors[i].element.parentNode.insertBefore(p, errors[i].element.nextElementSibling);
+                }else{
+                    errors[i].element.nextElementSibling.innerText = errors[i].message;
+                }
+            }
+        }
+    };
+    var messages = {
+        required: '<?php $l('This field is required.');?>',
+        valid_email: '<?php $l('This field must contain a valid email address.');?>',
+        alpha_numeric: '<?php $l('This field must only contain alpha-numeric characters.');?>'
+    };
+    var validatorAuthorize = new FormValidator('authorize', [{
+        name: 'password',
+        rules: 'required'
+    }, {
+        name: 'email',
+        rules: 'required|valid_email'
+    }], onError, messages);
+
+    var validatorRegister = new FormValidator('register', [{
+        name: 'name',
+        rules: 'required|alpha_numeric'
+    }, {
+        name: 'password',
+        rules: 'required'
+    }, {
+        name: 'email',
+        rules: 'required|valid_email'
+    }], onError, messages);
+</script>
